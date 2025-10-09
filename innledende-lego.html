@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEGO Prosjekt - André Skjellevik</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button class="menu-toggle">☰ Meny</button>
+
+    <nav class="nav-sidebar">
+        <div class="nav-header">
+            <h1>André Skjellevik</h1>
+            <p>ePortfolio</p>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">🏠 Hjem</a></li>
+            <li><a href="om-meg.html">👤 Om Meg</a></li>
+            <li><a href="lego-prosjekt.html">🧱 LEGO Prosjekt</a></li>
+            <li><a href="programmering.html">💻 Programmering</a></li>
+        </ul>
+    </nav>
+
+
+
+    <main class="main-content">
+        <div class="content-container">
+            <div class="hero">
+                <h1> Innledende LEGO Prosjekt | IDAT1004</h1>
+                <p>
+                </p>
+            </div>
+
+            <div class="card" style="width: 600px; margin-bottom: 40px;">
+                <a href="lego-prosjekt.html">
+                    <h3 style="color: hsl(224, 85%, 72%);">Tilbake til Hovedprosjektet i IDAT1004</h3>
+                </a>
+            </div>
+
+            <section id="overview">
+                <h2>Fagets innledende lego oppgaver</h2>
+                <p>
+                <h4><b>Refleksjoner og læringsmomenter</b> fra de innledende lego
+                    oppgavene vi har hatt så langt i IDAT1004.</h4>
+
+                Gjennom LEGO-øvingsoppgavene har jeg fått praktisk erfaring med å programmere robotens bevegelser og
+                sensorer ved hjelp av Python.
+                Jeg har lært meg hvordan man bruker programmeringsmiljøet Pybricks, og koblet det til ulike motorer og
+                sensorer.
+                Med disse har jeg fått brukt kunnskapene mine om grunnleggende programmeringprinsipper og logikk for å
+                få en fungerende robot. Over tid begynte vi å ta i bruk PID kontrollere for å redusere feilmarginene
+                fra sensorene. Jeg har ikke jobbet med PID kontrollere før, så dette lærte jeg masse av.
+                <br><br>
+                Ved jobbing i team har jeg fått erfaring med Github som et hjelpemiddel for å dokumentere og kontrollere
+                all arbeid som blir gjort. Jeg har også erfart viktigheten av et godt miljø blant teamet, samt tydelige
+                avklaringer og bestemmelser som kommer frem med for eksempel en arbeidskontrakt.
+                Totalt har prosjektet styrket både mine tekniske ferdigheter og
+                evne til å jobbe strukturert og løsningsorientert i praktiske prosjekter sammen med andre.
+                </p>
+
+
+
+                <h2>Innledende øvingsoppgaver</h2>
+                <div class="card">
+                    <h3>Øving 1</h3>
+                    <p><b>Mål:</b> Bygge en enkel bil med to motorer. Lage en python programkode
+                        som får bilen til å kjøre i et rektangulært mønster i tillegg til å ta i bruk LDC-skjermen
+                        og den innebygde høyttaleren
+                    </p>
+                    <p><b>Koden vår:</b></p>
+                    <pre><code>ev3 = EV3Brick()
+
+ev3.screen.print("Hello World!")
+
+leftmotor = Motor(port=Port.A)
+rightMotor = Motor(port=Port.B)
+
+
+robot = DriveBase(leftmotor,rightMotor, wheel_diameter=50,axle_track=130)
+
+for i in range(4):
+    robot.straight(200)
+    robot.turn(90)
+
+ev3.speaker.say("Have a nice day")</code></pre>
+                    <a
+                        href="https://git.ntnu.no/IDATT1004-Team20-H2025/Innledende-lego-oppgaver-Team20/blob/main/Oving1/main.py">Github
+                        kode</a>
+                </div>
+
+                <div class="card">
+                    <h3>Øving 2</h3>
+                    <p><b>Mål:</b> Implementere en trykksensor slik at bilen kan starte og stoppe på
+                        kommando. Også bruke vi en ultrasonisk sensor til å oppdage oppdage hindringer
+                        i veibanen til bilen, slik at vi kunne endre retning på bilen for å unngå kollisjon.
+                    </p>
+                    <p><b>Utsnitt av det vi implementerte fra øving 1:</b></p>
+                    <pre><code># Motorer og sensorer
+leftmotor = Motor(port=Port.A)
+rightMotor = Motor(port=Port.B)
+touchSensorOnOff = TouchSensor(Port.S1)
+distanceSensor = UltrasonicSensor(Port.S2)
+
+# Robotlogikken
+robot = DriveBase(leftmotor, rightMotor, wheel_diameter=50, axle_track=130)
+while True:
+    robot.drive(100, 0)
+    if distanceSensor.distance() &lt; 50:
+        robot.straight(-200)
+        robot.turn(75)
+</code></pre>
+                    <a
+                        href="https://git.ntnu.no/IDATT1004-Team20-H2025/Innledende-lego-oppgaver-Team20/blob/main/Oving2/main.py">Github
+                        kode</a>
+                </div>
+
+                <div class="card">
+                    <h3>Øving 3</h3>
+                    <p><b>Mål:</b> Implementere en styringsmekanisme som skal følge en sort strek på underlaget. Her
+                        brukte
+                        to fargesensorer som registrerte fargen foran under roboten, og svingte deretter for å få
+                        roboten
+                        til å følge streken. Også la vi til et par underholdningsnummre som skulle utføres hvert 10.
+                        sekund.
+                    </p>
+                    <p><b>Utsnitt av underholdningsnummerene vi la til som ble valgt ut tilfeldig hver 10. sekund:</b>
+                    </p>
+
+                    <pre><code>def move1_turnaround():
+    ev3.speaker.play_file('/home/robot/sounds/fortunate.wav')
+    robot.turn(90)
+
+def move2_backandforth():
+        ev3.speaker.play_file('/home/robot/sounds/#.wav')
+        for i in range(5):
+            robot.drive(5)
+            robot.drive(-5)
+
+def move3_twerk():
+    ev3.speaker.play_file('/home/robot/sounds/#.wav')
+    for i in range(5):
+         leftmotor.run_angle(100, 30)
+         rightmotor.run_angle(100, -30)
+
+def move4_meow():
+        ev3.speaker.play_file('/home/robot/sounds/meow.wav')
+                            
+                        </code></pre>
+                    <a
+                        href="https://git.ntnu.no/IDATT1004-Team20-H2025/Innledende-lego-oppgaver-Team20/tree/Oving3/Oving3">Github
+                        kode</a>
+
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>Øving 4</h3>
+                    <p><b>Mål:</b> Lage en robot som skal konkurrere i en rallykonkurranse mot en at annet team.
+                        Vi fokuserte på PID kontrolleren og få passende verdier. Vi supplementere en luke bakerst på
+                        roboten for å kunne dumpe objekter i veibanen for å sabotere motstandere.
+                    </p>
+                    <p><b>Utsnitt av PID verdiene vi brukte: </b></p>
+                    <pre><code>settings = {
+    'alpha': 0.75,
+    'controller': {
+        'p': 3.25,
+        'i': 0.01,
+        'd': 0.15,
+    },
+    'speed': 1000,
+}</code></pre>
+
+                    <a
+                        href="https://git.ntnu.no/IDATT1004-Team20-H2025/Innledende-lego-oppgaver-Team20/blob/rally/main.py">Github
+                        kode</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="navigation.js"></script>
+</body>
+
+</html>
